@@ -1,0 +1,87 @@
+{% extends 'layouts/base_home.html' %}
+{% load static %}
+
+{% block in_content %}
+    <div class="row" style="margin-bottom: 20px">
+        <div class="col-md-6">
+            <form class="my-2 my-lg-0 input-group" method="get" action="#">
+                <input name="search" class="form-control mr-sm-2" type="search" placeholder="Search"
+                       aria-label="Search">
+                <div class="input-group-append">
+                    <button style="margin-left: 10px" class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                        Search
+                    </button>
+                </div>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <div class="dropdown" style="float: right">
+                <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"
+                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Filter By Genre
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    {% for g in genre %}
+                        <a class="dropdown-item"
+                           href="{{ base_url }}?genre={{ g.uuid }}">{{ g.title }}</a>
+                    {% endfor %}
+                </div>
+                <a href="{% url 'books_home' %}" class="btn btn-success">Clear</a>
+            </div>
+        </div>
+    </div>
+    {% for books in book_lists %}
+        <div class="row">
+            {% for book in books %}
+                <div class="col-sm-6">
+                    <div class="card" style="min-height: 210px">
+                        <div class="card-body">
+                            <h3 class="card-title">{{book.name}}</h3>
+                            <img src="{{ book.image.url }}" style="height: 300px">
+                            <p class="card-text">{{ book.description }}</p>
+                            <small class="card-text"><b>Category</b>&nbsp&nbsp{{ book.genre.title }}</small><br>
+                            <small class="card-text"><b>Author</b>&nbsp&nbsp{{ book.author }}</small>
+                        </div>
+                        <div class="card-footer text-muted">
+                            {% if request.user.is_authenticated %}
+                                <button type="button" class="btn btn-outline-success" data-toggle="modal"
+                                        data-target="#BookConfirmation{{ book.id }}">
+                                    Request
+                                </button>
+                                <div class="modal fade" id="BookConfirmation{{ book.id }}" tabindex="-1" role="dialog"
+                                     aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                                    <div class="modal-dialog modal-dialog-centered" role="document">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLongTitle">Book Request</h5>
+                                                <button type="button" class="close" data-dismiss="modal"
+                                                        aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                You are requesting for the book <b>{{ book.name }}</b>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <a href="{% url 'book_request' book.uuid %}"
+                                                   class="btn btn-outline-success">Confirm</a>
+                                                <button type="button" class="btn btn-success"
+                                                        data-dismiss="modal">Cancel
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <a href="#" onclick="login_required()" class="btn btn-outline-success">Request</a>
+                            {% endif %}
+                            <a href="{% url 'book_detail' book.uuid %}" class="btn btn-success">Details</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <br>
+    {% endfor %}
+    {% include 'includes/pagination.html' %}
+{% endblock %}

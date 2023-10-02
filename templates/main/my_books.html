@@ -1,0 +1,33 @@
+{% extends 'layouts/base_home.html' %}
+
+{% block in_content %}
+    <div style="margin-bottom: 250px">
+{#    <div class="dropdown" style="margin-bottom: 20px">#}
+{#        <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"#}
+{#                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
+{#            Filter By Status#}
+{#        </button>#}
+{#        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">#}
+{#            {% for status in statuses %}#}
+{#                <a class="dropdown-item"#}
+{#                   href="?status={{ status }}">{{ status }}</a>#}
+{#            {% endfor %}#}
+{#        </div>#}
+{#        <a href="{% url 'my_jobs' %}" class="btn btn-success">Clear</a>#}
+{#    </div>#}
+    {% for request in book_requests %}
+        <div class="card" style="margin-bottom: 20px">
+            <div class="card-body">
+                <h5 class="card-title">{{ request.book.name }}</h5>
+                <img src="{{ request.book.image.url }}" style="height: 200px">
+                <p class="card-text">{{request.book.description}}</p>
+                <small class="card-text"><b>Genre</b>&nbsp&nbsp{{ request.book.genre.title }}</small><br>
+            </div>
+            <div class="card-footer text-muted">
+                <small>Request Date: {{ request.issue_date }}</small><br>
+                <small>Returned Date: {{ request.returned_date }}</small>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

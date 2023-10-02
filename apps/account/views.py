@@ -61,7 +61,7 @@ class UserLoginView(CreateView):
         if user is not None:
             login(request, user)
             messages.success(request, "User Loggen In Successfully !!")
-            return redirect('home')
+            return redirect('books_home')
         messages.error(request, "Invalid Username or Password !!")
         return redirect('user_login')
 
@@ -69,7 +69,7 @@ class UserLoginView(CreateView):
 def user_logout(request):
     logout(request)
     messages.success(request, "User Logged Out !!")
-    return redirect("home")
+    return redirect("books_home")
 
 
 def user_account_activation(request, username, key):

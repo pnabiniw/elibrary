@@ -5,23 +5,23 @@
                 aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="{% url 'home' %}">
-            <img src="{% static 'core/logo.png' %}" style="height: 40px; width: 140px">
+        <a class="navbar-brand" href="{% url 'books_home' %}">
+            <img src="{% static 'main/elib.jpg' %}" style="height: 40px; width: 140px">
         </a>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav nav-tabs me-auto mb-2 mb-lg-0" style="margin-left: 50px">
                 <li class="nav-item" style="margin-left: 20px">
-                    <a class="nav-link {{ home_active }}" href="{% url 'home' %}">Home</a>
+                    <a class="nav-link {{ home_active }}" href="{% url 'books_home' %}">Home</a>
                 </li>
                 <li class="nav-item" style="margin-left: 20px">
                     <a class="nav-link {{ faqs_active }}" href="#">FAQs</a>
                 </li>
                 <li class="nav-item" style="margin-left: 20px">
-                    <a class="nav-link {{ contact_active }}" href="{% url 'contact' %}">Contact Us</a>
+                    <a class="nav-link {{ contact_active }}" href="#">Contact Us</a>
                 </li>
                 {% if request.user.is_authenticated %}
                     <li class="nav-item" style="margin-left: 20px">
-                        <a class="nav-link {{ my_jobs_active }}" href="{% url 'my_jobs' %}">My Jobs</a>
+                        <a class="nav-link {{ my_books_active }}" href="{% url 'my_books' %}">My Books</a>
                     </li>
                 {% endif %}
             </ul>

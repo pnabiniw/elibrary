@@ -13,7 +13,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 ]
 
-LOCAL_APPS = ['apps.core', 'apps.account', 'apps.commons']
+LOCAL_APPS = ['apps.core', 'apps.account', 'apps.commons', 'apps.main']
 THIRD_PARTY_APPS = ['crispy_forms', 'crispy_bootstrap4']
 INSTALLED_APPS += THIRD_PARTY_APPS + LOCAL_APPS
 
