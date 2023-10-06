@@ -26,8 +26,16 @@ class Book(BaseModel):
 
 
 class BookApplication(BaseModel):
+    status_choices = [
+        ("REQUESTED", "Requested"),
+        ("ACCEPTED", "Accepted"),
+        ("CANCELED", "Canceled"),
+        ("REJECTED", "Rejected"),
+        ("RETURNED", "Returned")
+    ]
     book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name="book_applications")
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="user_bookapplications")
     issue_date = models.DateTimeField(default=timezone.now)
     returned_date = models.DateTimeField(null=True, blank=True)
     rating = models.IntegerField(null=True, blank=True)
+    status = models.CharField(choices=status_choices, default="REQUESTED", max_length=20)

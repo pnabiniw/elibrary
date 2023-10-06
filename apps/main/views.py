@@ -77,6 +77,15 @@ def book_request(request, uuid):
     return redirect('books_home')
 
 
+@login_required
+def book_rating(request, id):
+    book = Book.objects.get(id=id)
+    rating = request.POST.get("rating")
+    BookApplication.objects.filter(user=request.user, book=book, status="ACCEPTED").update(rating=rating,
+                                                                                           status="RETURNED")
+    return redirect("my_books")
+
+
 @method_decorator(login_required, name='dispatch')
 class MyBooksView(ListView):
     template_name = 'main/my_books.html'

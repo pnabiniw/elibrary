@@ -2,32 +2,58 @@
 
 {% block in_content %}
     <div style="margin-bottom: 250px">
-{#    <div class="dropdown" style="margin-bottom: 20px">#}
-{#        <button class="btn btn-outline-success dropdown-toggle" type="button" id="dropdownMenuButton"#}
-{#                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">#}
-{#            Filter By Status#}
-{#        </button>#}
-{#        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">#}
-{#            {% for status in statuses %}#}
-{#                <a class="dropdown-item"#}
-{#                   href="?status={{ status }}">{{ status }}</a>#}
-{#            {% endfor %}#}
-{#        </div>#}
-{#        <a href="{% url 'my_jobs' %}" class="btn btn-success">Clear</a>#}
-{#    </div>#}
-    {% for request in book_requests %}
-        <div class="card" style="margin-bottom: 20px">
-            <div class="card-body">
-                <h5 class="card-title">{{ request.book.name }}</h5>
-                <img src="{{ request.book.image.url }}" style="height: 200px">
-                <p class="card-text">{{request.book.description}}</p>
-                <small class="card-text"><b>Genre</b>&nbsp&nbsp{{ request.book.genre.title }}</small><br>
+        {% for request in book_requests %}
+            <div class="card" style="margin-bottom: 20px">
+                <div class="card-body">
+                    <h5 class="card-title">{{ request.book.name }}</h5>
+                    <img src="{{ request.book.image.url }}" style="height: 200px">
+                    <p class="card-text">{{ request.book.description }}</p>
+                    <small class="card-text"><b>Genre</b>&nbsp&nbsp{{ request.book.genre.title }}</small><br>
+                    <small class="card-text"><b>Status</b>&nbsp&nbsp{{ request.status|title }}</small><br>
+                    {% if request.status == "RETURNED" %}
+                        <small class="card-text"><b>Your Rating</b>&nbsp&nbsp{{ request.rating }}</small><br><br>
+                    {% endif %}
+                    {% if request.status == "ACCEPTED" %}
+                        <button type="button" class="btn btn-outline-success" data-toggle="modal"
+                                data-target="#BookReturn{{ request.id }}">
+                            Return
+                        </button>
+                        <div class="modal fade" id="BookReturn{{ request.id }}" tabindex="-1" role="dialog"
+                             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLongTitle">Please rate the book in score
+                                            of 0-5</h5>
+                                        <button type="button" class="close" data-dismiss="modal"
+                                                aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form method="post" action="{% url 'book_rating' request.book.id %}">
+                                        {% csrf_token %}
+                                        <div class="modal-body">
+                                            <input type="number" name="rating" value="5">
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit"
+                                                    class="btn btn-outline-success">Confirm
+                                            </button>
+                                            <button type="button" class="btn btn-success"
+                                                    data-dismiss="modal">Cancel
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                <div class="card-footer text-muted">
+                    <small>Request Date: {{ request.issue_date }}</small><br>
+                    <small>Returned Date: {{ request.returned_date }}</small>
+                </div>
             </div>
-            <div class="card-footer text-muted">
-                <small>Request Date: {{ request.issue_date }}</small><br>
-                <small>Returned Date: {{ request.returned_date }}</small>
-            </div>
-        </div>
-    {% endfor %}
+        {% endfor %}
     </div>
 {% endblock %}
